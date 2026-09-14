@@ -21,7 +21,7 @@ Environment secrets:
 | `DEPLOY_SSH_KEY` | Dedicated SSH private key used only for this deployment |
 | `DEPLOY_KNOWN_HOSTS` | Server host key, obtained through an already trusted connection |
 
-Create a [Tailscale federated identity](https://tailscale.com/docs/features/workload-identity-federation) for GitHub's issuer. Restrict its subject to `repo:OWNER/REPO:environment:production` and add the custom claim `ref=refs/heads/main`. Grant only auth-key creation for the deployment tag. Allow that tag to reach only the target server's TCP port 22; do not include it in broad access rules.
+Create a [Tailscale federated identity](https://tailscale.com/docs/features/workload-identity-federation) for GitHub's issuer. Restrict its subject to the exact GitHub OIDC subject for this repository’s `production` environment and add the custom claim `ref=refs/heads/main`. Depending on the repository’s identity format, the subject may be `repo:OWNER/REPO:environment:production` or include immutable IDs as `repo:OWNER@OWNER_ID/REPO@REPO_ID:environment:production`. If authentication reports a subject mismatch, Tailscale’s credential diagnostics show the received subject; match it exactly instead of using a wildcard. Grant only auth-key creation for the deployment tag. Allow that tag to reach only the target server's TCP port 22; do not include it in broad access rules.
 
 On the server, retain the existing Compose checkout, `.env`, and data volume. Install a wrapper outside the repository, replacing the example checkout path:
 
