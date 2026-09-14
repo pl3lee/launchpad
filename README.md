@@ -8,6 +8,8 @@ A small, self-hosted homepage for your favorite web apps, designed for Tesla bro
 - Keep your grid in a Docker volume, across browser sessions and app restarts.
 - Run a single Go binary with the React frontend embedded inside it.
 
+> **Security disclaimer:** The PIN provides only basic protection against casual access. It is not strong security and should not be relied on to protect sensitive information. Do not store sensitive information, passwords, API keys, or URLs containing secret tokens in Launchpad.
+
 ## Run with Docker Compose
 
 ```sh
