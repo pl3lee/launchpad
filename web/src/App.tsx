@@ -230,68 +230,72 @@ function AppEditor({
             <X size={22} />
           </button>
         </div>
-        <form onSubmit={submit}>
-          <div className="app-preview">
-            <div className={`app-icon color-${draft.color}`}>
-              <AppIcon name={draft.icon} />
+        <form onSubmit={submit} className="editor-form">
+          <div className="editor-body">
+            <div className="editor-details">
+              <div className="app-preview">
+                <div className={`app-icon color-${draft.color}`}>
+                  <AppIcon name={draft.icon} />
+                </div>
+                <div>
+                  <strong>{draft.name || 'App preview'}</strong>
+                  {draft.url ? <span>{draft.url}</span> : null}
+                </div>
+              </div>
+              <div className="field">
+                <label htmlFor="app-name">App name</label>
+                <input
+                  id="app-name"
+                  autoFocus={!app}
+                  required
+                  maxLength={60}
+                  value={draft.name}
+                  onChange={(event) => setDraft({ ...draft, name: event.target.value })}
+                  placeholder="e.g. Home Assistant"
+                  disabled={busy}
+                />
+              </div>
+              <div className="field">
+                <label htmlFor="app-url">Website URL</label>
+                <input
+                  id="app-url"
+                  required
+                  maxLength={2048}
+                  value={draft.url}
+                  onChange={(event) => setDraft({ ...draft, url: event.target.value })}
+                  placeholder="https://example.com"
+                  inputMode="url"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  disabled={busy}
+                />
+                <span className="field-hint">Opens in this tab. Use browser Back to return.</span>
+              </div>
+              <fieldset disabled={busy}>
+                <legend>Color</legend>
+                <div className="color-picker">
+                  {colorNames.map((color) => (
+                    <button
+                      key={color}
+                      type="button"
+                      aria-label={`${color} color`}
+                      aria-pressed={draft.color === color}
+                      className={`color-choice color-${color} ${draft.color === color ? 'selected' : ''}`}
+                      onClick={() => setDraft({ ...draft, color })}
+                    >
+                      {draft.color === color ? <Check size={18} /> : null}
+                    </button>
+                  ))}
+                </div>
+              </fieldset>
             </div>
-            <div>
-              <strong>{draft.name || 'App preview'}</strong>
-              {draft.url ? <span>{draft.url}</span> : null}
-            </div>
-          </div>
-          <div className="field">
-            <label htmlFor="app-name">App name</label>
-            <input
-              id="app-name"
-              autoFocus={!app}
-              required
-              maxLength={60}
-              value={draft.name}
-              onChange={(event) => setDraft({ ...draft, name: event.target.value })}
-              placeholder="e.g. Home Assistant"
+            <IconPicker
+              value={draft.icon}
+              onChange={(icon) => setDraft({ ...draft, icon })}
               disabled={busy}
             />
           </div>
-          <div className="field">
-            <label htmlFor="app-url">Website URL</label>
-            <input
-              id="app-url"
-              required
-              maxLength={2048}
-              value={draft.url}
-              onChange={(event) => setDraft({ ...draft, url: event.target.value })}
-              placeholder="https://example.com"
-              inputMode="url"
-              autoCapitalize="none"
-              autoCorrect="off"
-              spellCheck={false}
-              disabled={busy}
-            />
-            <span className="field-hint">Opens in this tab. Use browser Back to return.</span>
-          </div>
-          <IconPicker
-            value={draft.icon}
-            onChange={(icon) => setDraft({ ...draft, icon })}
-            disabled={busy}
-          />
-          <fieldset disabled={busy}>
-            <legend>Color</legend>
-            <div className="color-picker">
-              {colorNames.map((color) => (
-                <button
-                  key={color}
-                  type="button"
-                  aria-label={`${color} color`}
-                  aria-pressed={draft.color === color}
-                  className={`color-choice color-${color} ${draft.color === color ? 'selected' : ''}`}
-                  onClick={() => setDraft({ ...draft, color })}
-                >
-                  {draft.color === color ? <Check size={18} /> : null}
-                </button>
-              ))}
-            </div>
-          </fieldset>
           {error ? (
             <p className="form-error" role="alert">
               {error}
@@ -410,7 +414,6 @@ function Unlock({ onUnlock }: { onUnlock: (state: State) => void }) {
             {busy ? 'Unlocking…' : 'Unlock launchpad'}
             <ArrowRight size={19} />
           </button>
-          <p className="pin-note">You’ll stay signed in on this browser.</p>
         </form>
       </main>
     </div>
@@ -588,6 +591,14 @@ export function App() {
       <header className="topbar">
         <Brand />
         <div className="header-actions">
+          <button
+            className={`button ${editing ? 'primary' : 'secondary'} edit-toggle`}
+            onClick={() => setEditing(!editing)}
+            disabled={saving}
+          >
+            {editing ? <Check size={18} /> : <Pencil size={17} />}
+            {editing ? 'Done editing' : 'Edit apps'}
+          </button>
           {state.pinEnabled ? (
             <button
               className="icon-button lock-button"
@@ -601,21 +612,8 @@ export function App() {
           ) : null}
         </div>
       </header>
-      <main className={`dashboard ${editing || removed ? 'has-edit-dock' : ''}`}>
-        <div className="page-heading">
-          <div>
-            <h1>Your apps</h1>
-            {editing ? <p>Drag to reorder or drop in the trash. Use Edit to change an app.</p> : null}
-          </div>
-          <button
-            className={`button ${editing ? 'primary' : 'secondary'} edit-toggle`}
-            onClick={() => setEditing(!editing)}
-            disabled={saving}
-          >
-            {editing ? <Check size={18} /> : <Pencil size={17} />}
-            {editing ? 'Done editing' : 'Edit apps'}
-          </button>
-        </div>
+      <main className="dashboard">
+        <h1 className="sr-only">Your apps</h1>
         {error ? (
           <div className="error-banner" role="alert">
             <span>{error}</span>

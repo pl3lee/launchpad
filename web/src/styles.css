@@ -74,7 +74,8 @@ input {
   flex-direction: column;
 }
 .topbar {
-  height: 114px;
+  height: 72px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -109,20 +110,12 @@ input {
 }
 .header-actions {
   display: flex;
-  gap: 24px;
+  gap: 12px;
   align-items: center;
 }
 .dashboard {
-  padding-top: 53px;
-  padding-bottom: 62px;
+  padding: 16px 0;
   flex: 1;
-}
-.page-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 22px;
-  margin-bottom: 35px;
 }
 h1,
 h2,
@@ -136,10 +129,6 @@ h1 {
   font-weight: 500;
   line-height: 1.2;
   margin: 11px 0 12px;
-}
-.page-heading p {
-  font-size: 14px;
-  color: var(--muted);
 }
 .button {
   min-height: 46px;
@@ -175,14 +164,14 @@ h1 {
 .app-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 17px;
+  gap: 12px;
 }
 .tile-wrap {
   min-width: 0;
 }
 .app-tile,
 .add-tile {
-  height: 190px;
+  height: clamp(140px, calc((100svh - 260px) / 2), 190px);
   border-radius: 16px;
 }
 .app-tile {
@@ -192,7 +181,7 @@ h1 {
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
-  padding: 27px 25px 22px;
+  padding: 18px 20px;
   position: relative;
 }
 a.app-tile:hover {
@@ -299,7 +288,7 @@ a.app-tile:hover .launch-arrow {
   gap: 20px;
   justify-content: space-between;
   align-items: center;
-  margin-top: 22px;
+  margin-top: 12px;
   font-size: 11px;
   color: var(--muted);
 }
@@ -386,18 +375,15 @@ a.app-tile:hover .launch-arrow {
   border-color: #ffffff40;
   transform: rotate(2deg);
 }
-.has-edit-dock {
-  padding-bottom: 205px;
-}
 .edit-dock {
-  position: fixed;
-  bottom: max(16px, env(safe-area-inset-bottom));
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(440px, calc(100% - 32px));
+  position: sticky;
+  bottom: max(12px, env(safe-area-inset-bottom));
+  width: fit-content;
+  max-width: 100%;
+  margin: 12px auto 0;
   z-index: 30;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   gap: 8px;
   pointer-events: none;
 }
@@ -411,10 +397,11 @@ a.app-tile:hover .launch-arrow {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 14px 20px;
+  padding: 8px 16px;
 }
 .trash-drop {
-  min-height: 80px;
+  min-height: 64px;
+  max-width: 440px;
   justify-content: center;
   color: var(--muted);
   border-style: dashed;
@@ -467,7 +454,8 @@ a.app-tile:hover .launch-arrow {
   padding: 0;
   width: calc(100% - 32px);
   max-width: 520px;
-  max-height: calc(100svh - 40px);
+  max-height: calc(100dvh - 24px);
+  overflow: hidden;
   box-shadow: 0 32px 130px #0009;
 }
 .editor-dialog::backdrop {
@@ -475,14 +463,18 @@ a.app-tile:hover .launch-arrow {
   backdrop-filter: blur(7px);
 }
 .dialog-content {
-  padding: 29px;
+  padding: 20px;
+  max-height: calc(100dvh - 26px);
+  display: flex;
+  flex-direction: column;
 }
 .dialog-heading {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 18px;
-  margin-bottom: 23px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
 }
 h2 {
   font-family: var(--display);
@@ -664,13 +656,24 @@ legend {
 .color-choice.selected::before {
   display: none;
 }
+.editor-form {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.editor-body {
+  overflow-y: auto;
+  min-height: 0;
+  padding: 6px;
+}
 .dialog-actions {
+  flex-shrink: 0;
   border-top: 1px solid var(--line);
-  padding-top: 20px;
+  padding-top: 12px;
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  margin-top: 23px;
+  margin-top: 12px;
 }
 .form-error {
   font-size: 13px;
@@ -712,7 +715,7 @@ legend {
   justify-content: center;
   align-items: center;
   gap: 60px;
-  padding: 48px 60px 58px;
+  padding: 16px 0;
 }
 .pin-panel {
   padding: 27px;
@@ -765,12 +768,6 @@ legend {
 .unlock-button {
   width: 100%;
 }
-.pin-note {
-  font-size: 11px;
-  text-align: center;
-  color: var(--muted);
-  margin-top: 15px;
-}
 .sr-only {
   position: absolute;
   width: 1px;
@@ -792,13 +789,6 @@ legend {
     max-width: 1400px;
     padding: 0 70px;
   }
-  .app-tile,
-  .add-tile {
-    height: 215px;
-  }
-  .dashboard {
-    padding-top: 64px;
-  }
 }
 @media (max-width: 1000px) {
   .page {
@@ -810,7 +800,6 @@ legend {
   .app-tile,
   .add-tile {
     padding: 23px 19px 20px;
-    height: 180px;
   }
   .app-label {
     font-size: 14px;
@@ -832,18 +821,11 @@ legend {
   .app-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  .topbar {
-    height: 89px;
-  }
-  .dashboard {
-    padding-top: 36px;
-    padding-bottom: 38px;
-  }
   .unlock-main {
     grid-template-columns: 1fr;
     justify-items: center;
     gap: 32px;
-    padding: 34px 0;
+    padding: 16px 0;
   }
   .pin-panel {
     width: 350px;
@@ -854,24 +836,8 @@ legend {
   .page {
     padding: 0 22px;
   }
-  .topbar {
-    height: 78px;
-  }
   .brand {
     font-size: 21px;
-  }
-  .page-heading {
-    gap: 12px;
-    margin-bottom: 27px;
-  }
-  h1 {
-    font-size: 35px;
-    letter-spacing: -1.3px;
-  }
-  .page-heading p {
-    font-size: 12px;
-    line-height: 1.6;
-    max-width: 190px;
   }
   .edit-toggle {
     padding: 0 13px;
@@ -884,7 +850,6 @@ legend {
   }
   .app-tile,
   .add-tile {
-    height: 174px;
     border-radius: 13px;
     padding: 20px 18px 19px;
   }
@@ -905,16 +870,12 @@ legend {
   }
   .editing-tile {
     padding: 0;
-    height: 190px;
   }
   .tile-drag {
     padding: 17px 16px 10px;
   }
-  .is-editing .add-tile {
-    height: 190px;
-  }
   .dialog-content {
-    padding: 22px;
+    padding: 14px;
   }
   .icon-picker {
     gap: 5px;
@@ -943,17 +904,6 @@ legend {
 }
 
 @media (max-width: 375px) {
-  .page-heading {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 17px;
-  }
-  .page-heading p {
-    max-width: none;
-  }
-  .edit-toggle {
-    margin-top: 0;
-  }
   .icon-picker {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -975,14 +925,74 @@ legend {
 .tile-drag {
   gap: 10px;
 }
-.editing-tile {
-  height: 218px;
-}
-.is-editing .add-tile {
-  height: 218px;
-}
 @media (max-width: 560px) {
   .tile-drag {
     gap: 10px;
   }
+}
+
+/* Short landscape screens need room for two rows and the editing tools. */
+@media (min-width: 761px) {
+  .tile-drag {
+    display: grid;
+    grid-template-columns: 49px minmax(0, 1fr);
+    align-content: center;
+    align-items: center;
+    gap: 6px 12px;
+    padding: 12px 16px;
+  }
+  .tile-drag .app-icon {
+    grid-row: span 2;
+  }
+  .tile-drag .drag-cue {
+    grid-column: 2;
+  }
+  .editor-dialog {
+    max-width: 860px;
+  }
+  .editor-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 24px;
+  }
+  .editor-details fieldset {
+    margin-bottom: 0;
+  }
+  .icon-field {
+    margin-bottom: 0;
+  }
+  .icon-picker {
+    max-height: clamp(78px, calc(100dvh - 350px), 230px);
+  }
+}
+@media (max-height: 600px) {
+  .topbar { height: 60px; }
+  .dashboard { padding: 12px 0; }
+  .grid-meta { margin-top: 8px; }
+  .trash-drop { min-height: 56px; }
+  .edit-dock { margin-top: 8px; }
+  .app-preview { padding: 8px; margin-bottom: 12px; }
+  .field { margin-bottom: 12px; }
+  .field-hint { display: none; }
+  .unlock-main { padding: 10px 0; }
+  .pin-panel { padding: 16px; }
+  .pin-heading h1 { margin-bottom: 12px; }
+  .keypad { gap: 6px; margin: 10px 0; }
+  .keypad button { min-height: 44px; }
+}
+@media (max-width: 760px) {
+  .edit-dock { flex-wrap: wrap; }
+  .tile-drag { gap: 6px; }
+  .editing-tile, .is-editing .add-tile { height: 190px; }
+}
+@media (max-width: 375px) {
+  .page { padding: 0 12px; }
+  .header-actions { gap: 4px; }
+  .topbar { gap: 8px; }
+  .brand { font-size: 16px; gap: 8px; }
+  .edit-toggle { padding: 0 10px; font-size: 11px; }
+}
+
+@media (max-height: 520px) and (min-width: 761px) {
+  .app-preview { display: none; }
 }

@@ -21,4 +21,6 @@ The expanded icon picker was checked by rendering all 109 icons, filtering Web a
 
 Edit-dialog checks verified that the close button receives focus instead of an input. Trash-drop checks exercised removal, Undo, keyboard targeting/cancellation, ordinary reordering, and a narrow-screen trash target. Automated collision tests ensure that overlapping or approaching the trash does not delete an app unless its pointer lands inside.
 
+Compact-layout checks used 1024×600 and 960×480 viewports with the seven starter apps plus Add an app. The grid fits without page scrolling in normal and editing modes, including trash and Undo. At 960×480, PIN entry and the editor fields/actions also fit without page or editor-body scrolling; the icon list scrolls independently. Removal, Undo, saving, and edit focus were rechecked. A 320×700 viewport has no horizontal overflow, and its editor actions and sticky trash remain accessible. Larger grids retain scrolling so every app can still be reached.
+
 These checks used desktop Chromium with resized viewports. Actual Tesla hardware, vehicle-specific browser restrictions, and third-party streaming playback have not been tested. Before a release, check opening and returning from a shortcut, PIN entry, and touch reordering in a parked vehicle.
