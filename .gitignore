@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.example
+/data/
+/launchpad
+web/node_modules/
+web/dist/
+web/*.tsbuildinfo
+web/test-results/
+web/playwright-report/
+artifacts/
+.DS_Store
+.playwright-cli/
+output/
