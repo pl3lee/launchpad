@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "test": "node --experimental-strip-types --test src/drag.test.ts",
     "dev": "vite --host 0.0.0.0",
     "build": "tsc -b && vite build"
   },

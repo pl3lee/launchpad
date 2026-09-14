@@ -12,7 +12,6 @@ import {
   Pencil,
   Plus,
   RotateCcw,
-  Trash2,
   X,
 } from 'lucide-react'
 import {
@@ -21,7 +20,6 @@ import {
   KeyboardSensor,
   MouseSensor,
   TouchSensor,
-  closestCenter,
   useSensor,
   useSensors,
   type DragEndEvent,
@@ -30,13 +28,14 @@ import {
   SortableContext,
   arrayMove,
   rectSortingStrategy,
-  sortableKeyboardCoordinates,
   useSortable,
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { api, APIError, errorMessage, newID, type Grid, type State, type WebApp } from './api'
 import { AppIcon, Mark, colorNames } from './icons'
 import { IconPicker } from './IconPicker'
+import { EditDock } from './EditDock'
+import { gridCollisions, gridKeyboardCoordinates, TRASH_ID } from './drag'
 
 function Brand() {
   return (
@@ -102,7 +101,7 @@ function Tile({
             ref={setActivatorNodeRef}
             className="tile-drag"
             disabled={disabled}
-            aria-label={`Drag ${app.name} to reorder`}
+            aria-label={`Drag ${app.name} to move or remove`}
             {...attributes}
             {...listeners}
           >
@@ -153,12 +152,10 @@ function AppEditor({
   app,
   onClose,
   onSave,
-  onDelete,
 }: {
   app: WebApp | null
   onClose: () => void
   onSave: (app: WebApp) => Promise<void>
-  onDelete: (id: string) => Promise<void>
 }) {
   const dialog = useRef<HTMLDialogElement>(null)
   const [draft, setDraft] = useState<WebApp>(
@@ -166,13 +163,13 @@ function AppEditor({
   )
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
-  const [deleting, setDeleting] = useState(false)
   useEffect(() => {
     const el = dialog.current!
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     el.showModal()
-    el.querySelector('input')?.focus()
+    // The close button owns autofocus on edit; text fields only focus after a tap.
+    if (app) el.querySelector<HTMLButtonElement>('[data-editor-close]')?.focus({ preventScroll: true })
     return () => {
       el.close()
       document.body.style.overflow = previousOverflow
@@ -202,19 +199,6 @@ function AppEditor({
       setBusy(false)
     }
   }
-  async function remove() {
-    if (!app) return
-    setBusy(true)
-    setError('')
-    try {
-      await onDelete(app.id)
-      onClose()
-    } catch (err) {
-      setError(errorMessage(err))
-    } finally {
-      setBusy(false)
-    }
-  }
   return (
     <dialog
       ref={dialog}
@@ -232,7 +216,7 @@ function AppEditor({
         <div className="dialog-heading">
           <div>
             <h2 id="editor-title">
-              {deleting ? 'Remove this app?' : app ? 'Edit app' : 'Add an app'}
+              {app ? 'Edit app' : 'Add an app'}
             </h2>
           </div>
           <button
@@ -240,129 +224,94 @@ function AppEditor({
             onClick={onClose}
             disabled={busy}
             aria-label="Close dialog"
+            data-editor-close
+            autoFocus={Boolean(app)}
           >
             <X size={22} />
           </button>
         </div>
-        {deleting ? (
-          <>
-            <p className="delete-description">
-              Remove <strong>{app?.name}</strong> from your launchpad? You can add it again anytime.
-            </p>
-            {error ? (
-              <p className="form-error" role="alert">
-                {error}
-              </p>
-            ) : null}
-            <div className="dialog-actions">
-              <button
-                className="button secondary"
-                onClick={() => setDeleting(false)}
-                disabled={busy}
-              >
-                Keep app
-              </button>
-              <button className="button danger" onClick={remove} disabled={busy}>
-                {busy ? 'Removing…' : 'Remove app'}
-              </button>
+        <form onSubmit={submit}>
+          <div className="app-preview">
+            <div className={`app-icon color-${draft.color}`}>
+              <AppIcon name={draft.icon} />
             </div>
-          </>
-        ) : (
-          <form onSubmit={submit}>
-            <div className="app-preview">
-              <div className={`app-icon color-${draft.color}`}>
-                <AppIcon name={draft.icon} />
-              </div>
-              <div>
-                <strong>{draft.name || 'App preview'}</strong>
-                {draft.url ? <span>{draft.url}</span> : null}
-              </div>
+            <div>
+              <strong>{draft.name || 'App preview'}</strong>
+              {draft.url ? <span>{draft.url}</span> : null}
             </div>
-            <div className="field">
-              <label htmlFor="app-name">App name</label>
-              <input
-                id="app-name"
-                autoFocus
-                required
-                maxLength={60}
-                value={draft.name}
-                onChange={(event) => setDraft({ ...draft, name: event.target.value })}
-                placeholder="e.g. Home Assistant"
-                disabled={busy}
-              />
-            </div>
-            <div className="field">
-              <label htmlFor="app-url">Website URL</label>
-              <input
-                id="app-url"
-                required
-                maxLength={2048}
-                value={draft.url}
-                onChange={(event) => setDraft({ ...draft, url: event.target.value })}
-                placeholder="https://example.com"
-                inputMode="url"
-                autoCapitalize="none"
-                autoCorrect="off"
-                spellCheck={false}
-                disabled={busy}
-              />
-              <span className="field-hint">Opens in this tab. Use browser Back to return.</span>
-            </div>
-            <IconPicker
-              value={draft.icon}
-              onChange={(icon) => setDraft({ ...draft, icon })}
+          </div>
+          <div className="field">
+            <label htmlFor="app-name">App name</label>
+            <input
+              id="app-name"
+              autoFocus={!app}
+              required
+              maxLength={60}
+              value={draft.name}
+              onChange={(event) => setDraft({ ...draft, name: event.target.value })}
+              placeholder="e.g. Home Assistant"
               disabled={busy}
             />
-            <fieldset disabled={busy}>
-              <legend>Color</legend>
-              <div className="color-picker">
-                {colorNames.map((color) => (
-                  <button
-                    key={color}
-                    type="button"
-                    aria-label={`${color} color`}
-                    aria-pressed={draft.color === color}
-                    className={`color-choice color-${color} ${draft.color === color ? 'selected' : ''}`}
-                    onClick={() => setDraft({ ...draft, color })}
-                  >
-                    {draft.color === color ? <Check size={18} /> : null}
-                  </button>
-                ))}
-              </div>
-            </fieldset>
-            {error ? (
-              <p className="form-error" role="alert">
-                {error}
-              </p>
-            ) : null}
-            <div className="dialog-actions">
-              {app ? (
+          </div>
+          <div className="field">
+            <label htmlFor="app-url">Website URL</label>
+            <input
+              id="app-url"
+              required
+              maxLength={2048}
+              value={draft.url}
+              onChange={(event) => setDraft({ ...draft, url: event.target.value })}
+              placeholder="https://example.com"
+              inputMode="url"
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
+              disabled={busy}
+            />
+            <span className="field-hint">Opens in this tab. Use browser Back to return.</span>
+          </div>
+          <IconPicker
+            value={draft.icon}
+            onChange={(icon) => setDraft({ ...draft, icon })}
+            disabled={busy}
+          />
+          <fieldset disabled={busy}>
+            <legend>Color</legend>
+            <div className="color-picker">
+              {colorNames.map((color) => (
                 <button
+                  key={color}
                   type="button"
-                  className="remove-button"
-                  onClick={() => setDeleting(true)}
-                  disabled={busy}
+                  aria-label={`${color} color`}
+                  aria-pressed={draft.color === color}
+                  className={`color-choice color-${color} ${draft.color === color ? 'selected' : ''}`}
+                  onClick={() => setDraft({ ...draft, color })}
                 >
-                  <Trash2 size={17} />
-                  Remove app
+                  {draft.color === color ? <Check size={18} /> : null}
                 </button>
-              ) : (
-                <button
-                  type="button"
-                  className="button secondary"
-                  onClick={onClose}
-                  disabled={busy}
-                >
-                  Cancel
-                </button>
-              )}
-              <button className="button primary" disabled={busy}>
-                {busy ? 'Saving…' : app ? 'Save changes' : 'Add app'}
-                {!busy ? <Plus size={18} /> : null}
-              </button>
+              ))}
             </div>
-          </form>
-        )}
+          </fieldset>
+          {error ? (
+            <p className="form-error" role="alert">
+              {error}
+            </p>
+          ) : null}
+          <div className="dialog-actions">
+            <button
+              type="button"
+              className="button secondary"
+              onClick={onClose}
+              disabled={busy}
+            >
+              Cancel
+            </button>
+            <button className="button primary" disabled={busy}>
+              {busy ? 'Saving…' : app ? 'Save changes' : 'Add app'}
+              {!busy ? <Plus size={18} /> : null}
+            </button>
+          </div>
+        </form>
       </div>
     </dialog>
   )
@@ -475,12 +424,13 @@ export function App() {
   const [editor, setEditor] = useState<{ app: WebApp | null } | null>(null)
   const [saving, setSaving] = useState(false)
   const [activeID, setActiveID] = useState<string | null>(null)
+  const [removed, setRemoved] = useState<{ app: WebApp; index: number } | null>(null)
   const savingRef = useRef(false)
   const requestVersion = useRef(0)
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: 8 } }),
     useSensor(TouchSensor, { activationConstraint: { delay: 180, tolerance: 8 } }),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+    useSensor(KeyboardSensor, { coordinateGetter: gridKeyboardCoordinates }),
   )
   const load = useCallback(async () => {
     const version = ++requestVersion.current
@@ -524,6 +474,7 @@ export function App() {
         setState({ authenticated: false, pinEnabled: true })
         setEditor(null)
         setEditing(false)
+        setRemoved(null)
       } else {
         setState(before)
         setError(errorMessage(err))
@@ -535,16 +486,51 @@ export function App() {
     }
   }
   async function move(from: number, to: number) {
-    if (!state?.authenticated) return
+    if (!state?.authenticated || from < 0 || to < 0) return
     try {
       await save(arrayMove(state.apps, from, to))
     } catch {
       /* Save displays the actionable error and rolls back. */
     }
   }
+  async function remove(id: string) {
+    if (!state?.authenticated || savingRef.current) return
+    const index = state.apps.findIndex((app) => app.id === id)
+    if (index < 0) return
+    const app = state.apps[index]
+    try {
+      await save(state.apps.filter((item) => item.id !== id))
+      setRemoved({ app, index })
+    } catch {
+      /* Save restores the tile and displays the error. */
+    }
+  }
+  async function undoRemove() {
+    if (!state?.authenticated || !removed || savingRef.current) return
+    if (state.apps.some((app) => app.id === removed.app.id)) {
+      setRemoved(null)
+      return
+    }
+    if (state.apps.length >= 100) {
+      setError('Remove another app before restoring this one. The grid holds up to 100 apps.')
+      return
+    }
+    const apps = [...state.apps]
+    apps.splice(Math.min(removed.index, apps.length), 0, removed.app)
+    try {
+      await save(apps)
+      setRemoved(null)
+    } catch {
+      /* Keep Undo available if saving fails. */
+    }
+  }
   function drop(event: DragEndEvent) {
     setActiveID(null)
     if (!state?.authenticated || !event.over || event.active.id === event.over.id) return
+    if (event.over.id === TRASH_ID) {
+      void remove(String(event.active.id))
+      return
+    }
     void move(
       state.apps.findIndex((app) => app.id === event.active.id),
       state.apps.findIndex((app) => app.id === event.over!.id),
@@ -556,6 +542,7 @@ export function App() {
       await api('logout', 'POST', {})
       setState({ authenticated: false, pinEnabled: true })
       setEditing(false)
+      setRemoved(null)
     } catch (err) {
       setError(errorMessage(err))
     }
@@ -614,11 +601,11 @@ export function App() {
           ) : null}
         </div>
       </header>
-      <main className="dashboard">
+      <main className={`dashboard ${editing || removed ? 'has-edit-dock' : ''}`}>
         <div className="page-heading">
           <div>
             <h1>Your apps</h1>
-            {editing ? <p>Drag a tile to move it. Use Edit to change it.</p> : null}
+            {editing ? <p>Drag to reorder or drop in the trash. Use Edit to change an app.</p> : null}
           </div>
           <button
             className={`button ${editing ? 'primary' : 'secondary'} edit-toggle`}
@@ -647,7 +634,18 @@ export function App() {
         ) : null}
         <DndContext
           sensors={sensors}
-          collisionDetection={closestCenter}
+          collisionDetection={gridCollisions}
+          accessibility={{
+            screenReaderInstructions: {
+              draggable: 'Press Space to pick up an app. Use arrow keys to reorder, or Delete to target the trash. Press Space to drop, or Escape to cancel.',
+            },
+            announcements: {
+              onDragStart: ({ active }) => `Picked up ${state.apps.find((app) => app.id === active.id)?.name ?? 'app'}.`,
+              onDragOver: ({ over }) => over?.id === TRASH_ID ? 'Over trash. Drop to remove, or press Escape to cancel.' : 'Moving app.',
+              onDragEnd: ({ over }) => over?.id === TRASH_ID ? 'Dropped in trash.' : 'Dropped app.',
+              onDragCancel: () => 'Move cancelled.',
+            },
+          }}
           onDragStart={(event) => setActiveID(String(event.active.id))}
           onDragEnd={drop}
           onDragCancel={() => setActiveID(null)}
@@ -683,7 +681,16 @@ export function App() {
               ) : null}
             </div>
           </SortableContext>
-          <DragOverlay>
+          {editing || removed ? (
+            <EditDock
+              editing={editing}
+              disabled={saving}
+              activeName={activeApp?.name}
+              removedName={removed?.app.name}
+              onUndo={() => void undoRemove()}
+            />
+          ) : null}
+          <DragOverlay zIndex={20} dropAnimation={null}>
             {activeApp ? (
               <div className="app-tile drag-overlay">
                 <AppFace app={activeApp} />
@@ -712,7 +719,6 @@ export function App() {
                 : [...state.apps, app],
             )
           }
-          onDelete={(id) => save(state.apps.filter((app) => app.id !== id))}
         />
       ) : null}
     </div>

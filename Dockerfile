@@ -5,7 +5,7 @@ COPY web/package.json web/pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 COPY web/ ./
 COPY internal/server/icon-catalog.json /src/internal/server/icon-catalog.json
-RUN pnpm run build
+RUN pnpm test && pnpm run build
 
 FROM golang:1.26-alpine AS backend
 WORKDIR /src

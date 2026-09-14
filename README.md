@@ -44,9 +44,11 @@ For direct access on a trusted LAN, set `BIND_ADDRESS=0.0.0.0` and open `http://
 
 Tap an app to open its URL in the same tab. Use browser Back to return. **Add an app** accepts a name, website URL, icon, and color. URLs without a scheme use HTTPS. HTTP URLs are supported for local services.
 
-**Edit apps** exposes app editing and reorder controls. Drag the tile’s icon/name area to move an app (hold briefly on touchscreens), use its left/right buttons, or focus the tile and press Space, arrow keys, then Space to drop (Escape cancels). The separate **Edit** button changes its name, URL, icon, or color. Changes save immediately. All devices use the same grid. Returning to the page refreshes it; conflicting edits are rejected with a reload prompt instead of overwriting newer changes.
+**Edit apps** exposes app editing and reorder controls. Drag the tile’s icon/name area to move an app (hold briefly on touchscreens), use its left/right buttons, or focus the tile and press Space, arrow keys, then Space to drop (Escape cancels). The separate **Edit** button changes its name, URL, icon, or color without automatically opening the keyboard. Changes save immediately. All devices use the same grid. Returning to the page refreshes it; conflicting edits are rejected with a reload prompt instead of overwriting newer changes.
 
 The launcher opens normal websites. It does not bypass Tesla browser restrictions, third-party sign-in, subscriptions, DRM, or restrictions while driving. Individual services may not work in every vehicle browser. This project is independent and is not affiliated with Tesla or the linked services.
+
+Drag an app into the fixed **trash** target to remove it. **Undo** restores the most recently removed app during the current page session. For keyboard removal, focus a tile, press Space to pick it up, Delete to target the trash, and Space to drop; Escape cancels. Arrow keys continue to reorder apps.
 
 ### Icons
 
@@ -122,6 +124,7 @@ Validation and a standalone build:
 
 ```sh
 pnpm --dir web run build
+pnpm --dir web test
 go test -race ./...
 go vet ./...
 go build -trimpath -o launchpad .

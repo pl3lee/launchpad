@@ -386,6 +386,67 @@ a.app-tile:hover .launch-arrow {
   border-color: #ffffff40;
   transform: rotate(2deg);
 }
+.has-edit-dock {
+  padding-bottom: 205px;
+}
+.edit-dock {
+  position: fixed;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(440px, calc(100% - 32px));
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+.trash-drop,
+.undo-removal {
+  pointer-events: auto;
+  background: #22272b;
+  border: 1px solid #ffffff30;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px #0007;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+}
+.trash-drop {
+  min-height: 80px;
+  justify-content: center;
+  color: var(--muted);
+  border-style: dashed;
+  font-size: 15px;
+}
+.trash-drop svg {
+  flex-shrink: 0;
+}
+.trash-drop span {
+  overflow-wrap: anywhere;
+}
+.trash-drop.drag-active {
+  color: #ffb1a9;
+  border-color: #ef9c96;
+}
+.trash-drop.is-over {
+  background: #65332f;
+  color: #fff0eb;
+  border-style: solid;
+  border-color: #ffb1a9;
+}
+.undo-removal {
+  justify-content: space-between;
+  font-size: 13px;
+}
+.undo-removal > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.undo-removal button {
+  flex-shrink: 0;
+}
 .error-banner {
   border: 1px solid #ef817e50;
   border-radius: 12px;
@@ -611,37 +672,11 @@ legend {
   gap: 12px;
   margin-top: 23px;
 }
-.remove-button {
-  color: #ef9c96;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  min-height: 46px;
-  padding: 0 7px;
-  background: transparent;
-  font-size: 12px;
-  border-radius: 8px;
-}
-.remove-button:hover {
-  background: #ef817e12;
-}
 .form-error {
   font-size: 13px;
   line-height: 1.6;
   color: #f3a29c;
   margin: 12px 0;
-}
-.delete-description {
-  font-size: 15px;
-  line-height: 1.7;
-  color: var(--muted);
-}
-.delete-description strong {
-  color: var(--ink);
-}
-.danger {
-  background: #ef9c96;
-  color: #321d1c;
 }
 .empty-message {
   padding: 5px 0 30px;
