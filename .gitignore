@@ -12,3 +12,6 @@ artifacts/
 .DS_Store
 .playwright-cli/
 output/
+
+.deploy-backups/
+__pycache__/
