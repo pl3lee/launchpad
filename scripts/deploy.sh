@@ -13,8 +13,8 @@ fi
 cd "$DEPLOY_DIR"
 exec 9>.git/launchpad-deploy.lock
 flock -w 600 9
-[[ $(git branch --show-current) == main ]]
-[[ -z $(git status --porcelain --untracked-files=no) ]]
+[[ $(git branch --show-current) == main ]] || { echo "Deployment checkout must be on main." >&2; exit 1; }
+[[ -z $(git status --porcelain --untracked-files=no) ]] || { echo "Deployment checkout has tracked changes." >&2; exit 1; }
 git fetch origin main
 if [[ $(git rev-parse refs/remotes/origin/main) != "$revision" ]]; then
   echo 'Skipping superseded deployment.'
@@ -26,7 +26,7 @@ if [[ -n $previous ]]; then
   docker compose exec -T launchpad cat /data/apps.json > ".deploy-backups/apps-$(date -u +%Y%m%dT%H%M%SZ).json"
 fi
 git merge --ff-only "$revision"
-[[ $(git rev-parse HEAD) == "$revision" ]]
+[[ $(git rev-parse HEAD) == "$revision" ]] || { echo "Checkout does not match the tested commit." >&2; exit 1; }
 docker compose build launchpad
 if ! docker compose up -d --no-build --wait --wait-timeout 90 launchpad; then
   echo 'Deployment failed its health check.' >&2
