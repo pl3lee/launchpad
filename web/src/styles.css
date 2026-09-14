@@ -505,18 +505,64 @@ legend {
 }
 .icon-picker {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 6px;
+  max-height: 230px;
+  overflow-y: auto;
+  padding: 3px;
+  scrollbar-width: thin;
+}
+.selected-icon-label {
+  margin-left: 8px;
+  color: var(--muted);
+  font-weight: 400;
+}
+.icon-filters {
+  display: flex;
+  gap: 6px;
+  margin: 8px 0;
+}
+.icon-filters button {
+  min-height: 44px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  color: var(--muted);
+  background: transparent;
+  font-size: 12px;
+}
+.icon-filters button[aria-pressed='true'] {
+  color: var(--ink);
+  background: #ffffff0a;
+  border-color: #ffffff20;
 }
 .icon-choice {
   --icon-bg: #242b2e;
-  height: 44px;
+  min-height: 72px;
+  min-width: 0;
+  padding: 9px 4px;
   display: flex;
+  flex-direction: column;
+  gap: 7px;
   align-items: center;
   justify-content: center;
   border-radius: 8px;
   background: #ffffff03;
   border: 1px solid #ffffff0d;
+  color: var(--muted);
+}
+.icon-choice svg {
+  flex-shrink: 0;
+}
+.icon-choice span {
+  font-size: 10px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.icon-empty {
+  grid-column: 1 / -1;
+  padding: 20px 4px;
+  font-size: 13px;
   color: var(--muted);
 }
 .icon-choice.selected {
@@ -837,7 +883,7 @@ legend {
   }
   .icon-picker {
     gap: 5px;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
   .color-picker {
     gap: 9px;
@@ -874,7 +920,7 @@ legend {
     margin-top: 0;
   }
   .icon-picker {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .color-picker {
     gap: 8px;

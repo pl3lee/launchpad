@@ -1,6 +1,7 @@
 package server
 
 import (
+	_ "embed"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -32,7 +33,19 @@ type store struct {
 }
 
 var errConflict = errors.New("Your apps changed on another device. Reload to get the latest version.")
-var icons = map[string]bool{"youtube": true, "netflix": true, "spotify": true, "plex": true, "play": true, "music": true, "headphones": true, "navigation": true, "map": true, "globe": true, "home": true, "cloud": true, "radio": true, "gamepad": true, "bookmark": true, "tv": true}
+
+// The frontend picker and server validation share the same catalog.
+//
+//go:embed icon-catalog.json
+var iconCatalogJSON []byte
+
+var icons = func() map[string]json.RawMessage {
+	var catalog map[string]json.RawMessage
+	if err := json.Unmarshal(iconCatalogJSON, &catalog); err != nil {
+		panic(fmt.Errorf("read bundled icon catalog: %w", err))
+	}
+	return catalog
+}()
 var colors = map[string]bool{"coral": true, "mint": true, "violet": true, "amber": true, "blue": true, "silver": true}
 
 func defaults() Grid {
@@ -136,7 +149,8 @@ func validateApps(apps []App) error {
 		if err != nil || (u.Scheme != "https" && u.Scheme != "http") || u.Hostname() == "" || u.User != nil || len(a.URL) > 2048 {
 			return errors.New("Enter a valid http:// or https:// URL without embedded credentials.")
 		}
-		if !icons[a.Icon] || !colors[a.Color] {
+		_, validIcon := icons[a.Icon]
+		if !validIcon || !colors[a.Color] {
 			return errors.New("Choose an available icon and color.")
 		}
 	}

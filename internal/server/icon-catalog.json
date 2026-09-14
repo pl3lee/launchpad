@@ -1,0 +1,547 @@
+{
+  "globe": {
+    "label": "Website",
+    "group": "General",
+    "keywords": "web browser internet"
+  },
+  "play": {
+    "label": "Video",
+    "group": "General",
+    "keywords": "movies streaming media"
+  },
+  "music": {
+    "label": "Music",
+    "group": "General",
+    "keywords": "songs audio"
+  },
+  "headphones": {
+    "label": "Headphones",
+    "group": "General",
+    "keywords": "podcasts audio"
+  },
+  "navigation": {
+    "label": "Navigation",
+    "group": "General",
+    "keywords": "directions route abrp"
+  },
+  "map": {
+    "label": "Map",
+    "group": "General",
+    "keywords": "directions travel"
+  },
+  "home": {
+    "label": "Home",
+    "group": "General",
+    "keywords": "smart home automation"
+  },
+  "cloud": {
+    "label": "Cloud",
+    "group": "General",
+    "keywords": "storage sync"
+  },
+  "radio": {
+    "label": "Radio",
+    "group": "General",
+    "keywords": "stations audio"
+  },
+  "gamepad": {
+    "label": "Games",
+    "group": "General",
+    "keywords": "gaming controller"
+  },
+  "bookmark": {
+    "label": "Bookmark",
+    "group": "General",
+    "keywords": "favorites reading"
+  },
+  "tv": {
+    "label": "TV",
+    "group": "General",
+    "keywords": "television streaming"
+  },
+  "film": {
+    "label": "Movies",
+    "group": "General",
+    "keywords": "cinema video"
+  },
+  "podcast": {
+    "label": "Podcasts",
+    "group": "General",
+    "keywords": "shows audio"
+  },
+  "camera": {
+    "label": "Camera",
+    "group": "General",
+    "keywords": "security photos"
+  },
+  "image": {
+    "label": "Photos",
+    "group": "General",
+    "keywords": "pictures gallery"
+  },
+  "book": {
+    "label": "Books",
+    "group": "General",
+    "keywords": "reading ebook"
+  },
+  "newspaper": {
+    "label": "News",
+    "group": "General",
+    "keywords": "articles rss"
+  },
+  "rss": {
+    "label": "RSS",
+    "group": "General",
+    "keywords": "feeds reader"
+  },
+  "mail": {
+    "label": "Mail",
+    "group": "General",
+    "keywords": "email inbox"
+  },
+  "message": {
+    "label": "Chat",
+    "group": "General",
+    "keywords": "messages conversation"
+  },
+  "phone": {
+    "label": "Phone",
+    "group": "General",
+    "keywords": "calls contacts"
+  },
+  "calendar": {
+    "label": "Calendar",
+    "group": "General",
+    "keywords": "schedule events"
+  },
+  "tasks": {
+    "label": "Tasks",
+    "group": "General",
+    "keywords": "to do checklist reminders"
+  },
+  "notes": {
+    "label": "Notes",
+    "group": "General",
+    "keywords": "writing documents"
+  },
+  "search": {
+    "label": "Search",
+    "group": "General",
+    "keywords": "find web"
+  },
+  "folder": {
+    "label": "Files",
+    "group": "General",
+    "keywords": "documents storage"
+  },
+  "server": {
+    "label": "Server",
+    "group": "General",
+    "keywords": "homelab hosting nas"
+  },
+  "chart": {
+    "label": "Dashboard",
+    "group": "General",
+    "keywords": "charts analytics monitoring"
+  },
+  "terminal": {
+    "label": "Terminal",
+    "group": "General",
+    "keywords": "console shell code"
+  },
+  "settings": {
+    "label": "Settings",
+    "group": "General",
+    "keywords": "configuration controls"
+  },
+  "lock": {
+    "label": "Security",
+    "group": "General",
+    "keywords": "passwords privacy"
+  },
+  "wifi": {
+    "label": "Network",
+    "group": "General",
+    "keywords": "internet router"
+  },
+  "car": {
+    "label": "Car",
+    "group": "General",
+    "keywords": "vehicle tesla"
+  },
+  "charging": {
+    "label": "Charging",
+    "group": "General",
+    "keywords": "battery ev power"
+  },
+  "parking": {
+    "label": "Parking",
+    "group": "General",
+    "keywords": "car spaces"
+  },
+  "coffee": {
+    "label": "Coffee",
+    "group": "General",
+    "keywords": "cafes drinks"
+  },
+  "food": {
+    "label": "Food",
+    "group": "General",
+    "keywords": "restaurants meals"
+  },
+  "shopping": {
+    "label": "Shopping",
+    "group": "General",
+    "keywords": "store groceries"
+  },
+  "wallet": {
+    "label": "Wallet",
+    "group": "General",
+    "keywords": "money budget finance"
+  },
+  "weather": {
+    "label": "Weather",
+    "group": "General",
+    "keywords": "forecast sun rain"
+  },
+  "moon": {
+    "label": "Night",
+    "group": "General",
+    "keywords": "sleep dark"
+  },
+  "heart": {
+    "label": "Health",
+    "group": "General",
+    "keywords": "fitness favorites"
+  },
+  "dumbbell": {
+    "label": "Fitness",
+    "group": "General",
+    "keywords": "gym workout exercise"
+  },
+  "plane": {
+    "label": "Travel",
+    "group": "General",
+    "keywords": "flights airport"
+  },
+  "train": {
+    "label": "Transit",
+    "group": "General",
+    "keywords": "trains transport"
+  },
+  "compass": {
+    "label": "Explore",
+    "group": "General",
+    "keywords": "discover outdoors"
+  },
+  "star": {
+    "label": "Favorites",
+    "group": "General",
+    "keywords": "saved favorite"
+  },
+  "youtube": {
+    "label": "YouTube",
+    "group": "Web apps",
+    "keywords": "video music podcasts streaming media"
+  },
+  "netflix": {
+    "label": "Netflix",
+    "group": "Web apps",
+    "keywords": "video music podcasts streaming media"
+  },
+  "spotify": {
+    "label": "Spotify",
+    "group": "Web apps",
+    "keywords": "video music podcasts streaming media"
+  },
+  "plex": {
+    "label": "Plex",
+    "group": "Web apps",
+    "keywords": "video music podcasts streaming media"
+  },
+  "jellyfin": {
+    "label": "Jellyfin",
+    "group": "Web apps",
+    "keywords": "video music podcasts streaming media"
+  },
+  "emby": {
+    "label": "Emby",
+    "group": "Web apps",
+    "keywords": "video music podcasts streaming media"
+  },
+  "twitch": {
+    "label": "Twitch",
+    "group": "Web apps",
+    "keywords": "video music podcasts streaming media"
+  },
+  "vimeo": {
+    "label": "Vimeo",
+    "group": "Web apps",
+    "keywords": "video music podcasts streaming media"
+  },
+  "dailymotion": {
+    "label": "Dailymotion",
+    "group": "Web apps",
+    "keywords": "video music podcasts streaming media"
+  },
+  "youtubemusic": {
+    "label": "YouTube Music",
+    "group": "Web apps",
+    "keywords": "video music podcasts streaming media"
+  },
+  "pocketcasts": {
+    "label": "Pocket Casts",
+    "group": "Web apps",
+    "keywords": "video music podcasts streaming media"
+  },
+  "soundcloud": {
+    "label": "SoundCloud",
+    "group": "Web apps",
+    "keywords": "video music podcasts streaming media"
+  },
+  "tidal": {
+    "label": "TIDAL",
+    "group": "Web apps",
+    "keywords": "video music podcasts streaming media"
+  },
+  "bandcamp": {
+    "label": "Bandcamp",
+    "group": "Web apps",
+    "keywords": "video music podcasts streaming media"
+  },
+  "podcastaddict": {
+    "label": "Podcast Addict",
+    "group": "Web apps",
+    "keywords": "video music podcasts streaming media"
+  },
+  "homeassistant": {
+    "label": "Home Assistant",
+    "group": "Web apps",
+    "keywords": "self hosted homelab home automation storage server"
+  },
+  "immich": {
+    "label": "Immich",
+    "group": "Web apps",
+    "keywords": "self hosted homelab home automation storage server"
+  },
+  "nextcloud": {
+    "label": "Nextcloud",
+    "group": "Web apps",
+    "keywords": "self hosted homelab home automation storage server"
+  },
+  "synology": {
+    "label": "Synology",
+    "group": "Web apps",
+    "keywords": "self hosted homelab home automation storage server"
+  },
+  "unraid": {
+    "label": "Unraid",
+    "group": "Web apps",
+    "keywords": "self hosted homelab home automation storage server"
+  },
+  "proxmox": {
+    "label": "Proxmox",
+    "group": "Web apps",
+    "keywords": "self hosted homelab home automation storage server"
+  },
+  "portainer": {
+    "label": "Portainer",
+    "group": "Web apps",
+    "keywords": "self hosted homelab home automation storage server"
+  },
+  "docker": {
+    "label": "Docker",
+    "group": "Web apps",
+    "keywords": "self hosted homelab home automation storage server"
+  },
+  "grafana": {
+    "label": "Grafana",
+    "group": "Web apps",
+    "keywords": "self hosted homelab home automation storage server"
+  },
+  "pihole": {
+    "label": "Pi-hole",
+    "group": "Web apps",
+    "keywords": "self hosted homelab home automation storage server"
+  },
+  "adguard": {
+    "label": "AdGuard",
+    "group": "Web apps",
+    "keywords": "self hosted homelab home automation storage server"
+  },
+  "uptimekuma": {
+    "label": "Uptime Kuma",
+    "group": "Web apps",
+    "keywords": "self hosted homelab home automation storage server"
+  },
+  "homebridge": {
+    "label": "Homebridge",
+    "group": "Web apps",
+    "keywords": "self hosted homelab home automation storage server"
+  },
+  "nodered": {
+    "label": "Node-RED",
+    "group": "Web apps",
+    "keywords": "self hosted homelab home automation storage server"
+  },
+  "openhab": {
+    "label": "openHAB",
+    "group": "Web apps",
+    "keywords": "self hosted homelab home automation storage server"
+  },
+  "github": {
+    "label": "GitHub",
+    "group": "Web apps",
+    "keywords": "social community chat messaging"
+  },
+  "gitlab": {
+    "label": "GitLab",
+    "group": "Web apps",
+    "keywords": "social community chat messaging"
+  },
+  "reddit": {
+    "label": "Reddit",
+    "group": "Web apps",
+    "keywords": "social community chat messaging"
+  },
+  "discord": {
+    "label": "Discord",
+    "group": "Web apps",
+    "keywords": "social community chat messaging"
+  },
+  "telegram": {
+    "label": "Telegram",
+    "group": "Web apps",
+    "keywords": "social community chat messaging"
+  },
+  "whatsapp": {
+    "label": "WhatsApp",
+    "group": "Web apps",
+    "keywords": "social community chat messaging"
+  },
+  "signal": {
+    "label": "Signal",
+    "group": "Web apps",
+    "keywords": "social community chat messaging"
+  },
+  "mastodon": {
+    "label": "Mastodon",
+    "group": "Web apps",
+    "keywords": "social community chat messaging"
+  },
+  "bluesky": {
+    "label": "Bluesky",
+    "group": "Web apps",
+    "keywords": "social community chat messaging"
+  },
+  "protonmail": {
+    "label": "Proton Mail",
+    "group": "Web apps",
+    "keywords": "email productivity notes tasks"
+  },
+  "notion": {
+    "label": "Notion",
+    "group": "Web apps",
+    "keywords": "email productivity notes tasks"
+  },
+  "obsidian": {
+    "label": "Obsidian",
+    "group": "Web apps",
+    "keywords": "email productivity notes tasks"
+  },
+  "todoist": {
+    "label": "Todoist",
+    "group": "Web apps",
+    "keywords": "email productivity notes tasks"
+  },
+  "trello": {
+    "label": "Trello",
+    "group": "Web apps",
+    "keywords": "email productivity notes tasks"
+  },
+  "openstreetmap": {
+    "label": "OpenStreetMap",
+    "group": "Web apps",
+    "keywords": "maps directions navigation travel"
+  },
+  "waze": {
+    "label": "Waze",
+    "group": "Web apps",
+    "keywords": "maps directions navigation travel"
+  },
+  "tesla": {
+    "label": "Tesla",
+    "group": "Web apps",
+    "keywords": "maps directions navigation travel"
+  },
+  "googlemaps": {
+    "label": "Google Maps",
+    "group": "Web apps",
+    "keywords": "maps directions navigation travel"
+  },
+  "googledrive": {
+    "label": "Google Drive",
+    "group": "Web apps",
+    "keywords": "google productivity mail calendar files photos"
+  },
+  "gmail": {
+    "label": "Gmail",
+    "group": "Web apps",
+    "keywords": "google productivity mail calendar files photos"
+  },
+  "googlecalendar": {
+    "label": "Google Calendar",
+    "group": "Web apps",
+    "keywords": "google productivity mail calendar files photos"
+  },
+  "googlenews": {
+    "label": "Google News",
+    "group": "Web apps",
+    "keywords": "google productivity mail calendar files photos"
+  },
+  "googlephotos": {
+    "label": "Google Photos",
+    "group": "Web apps",
+    "keywords": "google productivity mail calendar files photos"
+  },
+  "googlesheets": {
+    "label": "Google Sheets",
+    "group": "Web apps",
+    "keywords": "google productivity mail calendar files photos"
+  },
+  "googledocs": {
+    "label": "Google Docs",
+    "group": "Web apps",
+    "keywords": "google productivity mail calendar files photos"
+  },
+  "wikipedia": {
+    "label": "Wikipedia",
+    "group": "Web apps",
+    "keywords": "search browser reading"
+  },
+  "duckduckgo": {
+    "label": "DuckDuckGo",
+    "group": "Web apps",
+    "keywords": "search browser reading"
+  },
+  "brave": {
+    "label": "Brave",
+    "group": "Web apps",
+    "keywords": "search browser reading"
+  },
+  "firefoxbrowser": {
+    "label": "Firefox Browser",
+    "group": "Web apps",
+    "keywords": "search browser reading"
+  },
+  "steam": {
+    "label": "Steam",
+    "group": "Web apps",
+    "keywords": "games gaming"
+  },
+  "itchdotio": {
+    "label": "Itch.io",
+    "group": "Web apps",
+    "keywords": "games gaming"
+  }
+}

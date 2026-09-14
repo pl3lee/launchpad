@@ -1,40 +1,127 @@
 import {
-  Bookmark,
-  Cloud,
-  Gamepad2,
   Globe2,
-  Headphones,
-  Home,
-  Map,
-  Music2,
-  Navigation,
   Play,
+  Music2,
+  Headphones,
+  Navigation,
+  Map,
+  Home,
+  Cloud,
   Radio,
+  Gamepad2,
+  Bookmark,
   Tv,
+  Film,
+  Podcast,
+  Camera,
+  Image,
+  BookOpen,
+  Newspaper,
+  Rss,
+  Mail,
+  MessageCircle,
+  Phone,
+  CalendarDays,
+  ListTodo,
+  NotebookPen,
+  Search,
+  Folder,
+  Server,
+  ChartNoAxesCombined,
+  Terminal,
+  Settings,
+  LockKeyhole,
+  Wifi,
+  Car,
+  BatteryCharging,
+  SquareParking,
+  Coffee,
+  Utensils,
+  ShoppingCart,
+  Wallet,
+  CloudSun,
+  Moon,
+  Heart,
+  Dumbbell,
+  Plane,
+  TrainFront,
+  Compass,
+  Star,
 } from 'lucide-react'
+import {
+  siYoutube,
+  siNetflix,
+  siSpotify,
+  siPlex,
+  siJellyfin,
+  siEmby,
+  siTwitch,
+  siVimeo,
+  siDailymotion,
+  siYoutubemusic,
+  siPocketcasts,
+  siSoundcloud,
+  siTidal,
+  siBandcamp,
+  siPodcastaddict,
+  siHomeassistant,
+  siImmich,
+  siNextcloud,
+  siSynology,
+  siUnraid,
+  siProxmox,
+  siPortainer,
+  siDocker,
+  siGrafana,
+  siPihole,
+  siAdguard,
+  siUptimekuma,
+  siHomebridge,
+  siNodered,
+  siOpenhab,
+  siGithub,
+  siGitlab,
+  siReddit,
+  siDiscord,
+  siTelegram,
+  siWhatsapp,
+  siSignal,
+  siMastodon,
+  siBluesky,
+  siProtonmail,
+  siNotion,
+  siObsidian,
+  siTodoist,
+  siTrello,
+  siOpenstreetmap,
+  siWaze,
+  siTesla,
+  siGooglemaps,
+  siGoogledrive,
+  siGmail,
+  siGooglecalendar,
+  siGooglenews,
+  siGooglephotos,
+  siGooglesheets,
+  siGoogledocs,
+  siWikipedia,
+  siDuckduckgo,
+  siBrave,
+  siFirefoxbrowser,
+  siSteam,
+  siItchdotio,
+} from 'simple-icons'
+import catalog from '../../internal/server/icon-catalog.json'
 
-export const iconNames = [
-  'globe',
-  'play',
-  'music',
-  'headphones',
-  'navigation',
-  'map',
-  'home',
-  'cloud',
-  'radio',
-  'gamepad',
-  'bookmark',
-  'tv',
-  'youtube',
-  'netflix',
-  'spotify',
-  'plex',
-] as const
+export type IconName = keyof typeof catalog
+export const iconOptions = Object.entries(catalog).map(([name, details]) => ({
+  name: name as IconName,
+  ...details,
+}))
 export const colorNames = ['silver', 'coral', 'amber', 'mint', 'blue', 'violet'] as const
-export type IconName = (typeof iconNames)[number]
 export type ColorName = (typeof colorNames)[number]
-const generic = {
+
+const iconMap = {
   globe: Globe2,
   play: Play,
   music: Music2,
@@ -47,38 +134,119 @@ const generic = {
   gamepad: Gamepad2,
   bookmark: Bookmark,
   tv: Tv,
-}
+  film: Film,
+  podcast: Podcast,
+  camera: Camera,
+  image: Image,
+  book: BookOpen,
+  newspaper: Newspaper,
+  rss: Rss,
+  mail: Mail,
+  message: MessageCircle,
+  phone: Phone,
+  calendar: CalendarDays,
+  tasks: ListTodo,
+  notes: NotebookPen,
+  search: Search,
+  folder: Folder,
+  server: Server,
+  chart: ChartNoAxesCombined,
+  terminal: Terminal,
+  settings: Settings,
+  lock: LockKeyhole,
+  wifi: Wifi,
+  car: Car,
+  charging: BatteryCharging,
+  parking: SquareParking,
+  coffee: Coffee,
+  food: Utensils,
+  shopping: ShoppingCart,
+  wallet: Wallet,
+  weather: CloudSun,
+  moon: Moon,
+  heart: Heart,
+  dumbbell: Dumbbell,
+  plane: Plane,
+  train: TrainFront,
+  compass: Compass,
+  star: Star,
+  youtube: siYoutube,
+  netflix: siNetflix,
+  spotify: siSpotify,
+  plex: siPlex,
+  jellyfin: siJellyfin,
+  emby: siEmby,
+  twitch: siTwitch,
+  vimeo: siVimeo,
+  dailymotion: siDailymotion,
+  youtubemusic: siYoutubemusic,
+  pocketcasts: siPocketcasts,
+  soundcloud: siSoundcloud,
+  tidal: siTidal,
+  bandcamp: siBandcamp,
+  podcastaddict: siPodcastaddict,
+  homeassistant: siHomeassistant,
+  immich: siImmich,
+  nextcloud: siNextcloud,
+  synology: siSynology,
+  unraid: siUnraid,
+  proxmox: siProxmox,
+  portainer: siPortainer,
+  docker: siDocker,
+  grafana: siGrafana,
+  pihole: siPihole,
+  adguard: siAdguard,
+  uptimekuma: siUptimekuma,
+  homebridge: siHomebridge,
+  nodered: siNodered,
+  openhab: siOpenhab,
+  github: siGithub,
+  gitlab: siGitlab,
+  reddit: siReddit,
+  discord: siDiscord,
+  telegram: siTelegram,
+  whatsapp: siWhatsapp,
+  signal: siSignal,
+  mastodon: siMastodon,
+  bluesky: siBluesky,
+  protonmail: siProtonmail,
+  notion: siNotion,
+  obsidian: siObsidian,
+  todoist: siTodoist,
+  trello: siTrello,
+  openstreetmap: siOpenstreetmap,
+  waze: siWaze,
+  tesla: siTesla,
+  googlemaps: siGooglemaps,
+  googledrive: siGoogledrive,
+  gmail: siGmail,
+  googlecalendar: siGooglecalendar,
+  googlenews: siGooglenews,
+  googlephotos: siGooglephotos,
+  googlesheets: siGooglesheets,
+  googledocs: siGoogledocs,
+  wikipedia: siWikipedia,
+  duckduckgo: siDuckduckgo,
+  brave: siBrave,
+  firefoxbrowser: siFirefoxbrowser,
+  steam: siSteam,
+  itchdotio: siItchdotio,
+} satisfies Record<IconName, unknown>
+
 export function AppIcon({ name, size = 32 }: { name: string; size?: number }) {
-  if (name in generic) {
-    const Icon = generic[name as keyof typeof generic]
-    return <Icon size={size} strokeWidth={1.7} aria-hidden="true" />
+  const Icon = Object.prototype.hasOwnProperty.call(iconMap, name)
+    ? iconMap[name as IconName]
+    : Globe2
+  if ('path' in Icon) {
+    return (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d={Icon.path} />
+      </svg>
+    )
   }
-  return (
-    <svg width={size} height={size} viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
-      {name === 'youtube' ? (
-        <>
-          <rect x="2" y="6" width="28" height="20" rx="6" />
-          <path d="m13 11 9 5-9 5z" fill="var(--icon-bg)" />
-        </>
-      ) : null}
-      {name === 'netflix' ? (
-        <>
-          <path d="M8 3h5v26H8zM19 3h5v26h-5z" />
-          <path d="M8 3h5l11 26h-5z" opacity=".7" />
-        </>
-      ) : null}
-      {name === 'spotify' ? (
-        <>
-          <circle cx="16" cy="16" r="14" />
-          <g fill="none" stroke="var(--icon-bg)" strokeWidth="2.4" strokeLinecap="round">
-            <path d="M8 12c5-2 12-1 17 2M9 17c5-2 10-1 14 1M10 22c4-1 8-1 11 1" />
-          </g>
-        </>
-      ) : null}
-      {name === 'plex' ? <path d="M8 3h9l10 13-10 13H8l10-13z" /> : null}
-    </svg>
-  )
+  return <Icon size={size} strokeWidth={1.7} aria-hidden="true" />
 }
+
 export function Mark() {
   return (
     <span className="mark" aria-hidden="true">

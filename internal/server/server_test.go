@@ -51,6 +51,42 @@ func loginCookie(t *testing.T, s *Server, pin string) *http.Cookie {
 	}
 	return cookies[0]
 }
+func TestIconCatalogSavesAndSurvivesRestart(t *testing.T) {
+	s := testServer(t, "")
+	// Exercise every picker ID through the save API, in batches below the grid limit.
+	var apps []App
+	for name := range icons {
+		apps = append(apps, App{ID: name, Name: name, URL: "https://example.com", Icon: name, Color: "silver"})
+	}
+	for start := 0; start < len(apps); start += 100 {
+		end := min(start+100, len(apps))
+		g := Grid{Revision: s.store.get().Revision, Apps: apps[start:end]}
+		w := request(s, "PUT", "/api/apps", g, nil)
+		if w.Code != http.StatusOK {
+			t.Fatalf("save catalog icons: %d %s", w.Code, w.Body)
+		}
+		reloaded, err := newStore(s.cfg.DataDir)
+		if err != nil {
+			t.Fatalf("restart with catalog icons: %v", err)
+		}
+		got := reloaded.get().Apps
+		if len(got) != len(g.Apps) {
+			t.Fatal("restart lost apps")
+		}
+		for i := range got {
+			if got[i].Icon != g.Apps[i].Icon {
+				t.Fatal("restart changed icon")
+			}
+		}
+	}
+	for _, name := range []string{"not-an-icon", "constructor", "../home", "https://example.com/icon.svg"} {
+		g := Grid{Revision: s.store.get().Revision, Apps: []App{{ID: "bad", Name: "Bad icon", URL: "https://example.com", Icon: name, Color: "silver"}}}
+		if w := request(s, "PUT", "/api/apps", g, nil); w.Code != http.StatusBadRequest {
+			t.Fatalf("accepted unknown icon %q: %d", name, w.Code)
+		}
+	}
+}
+
 func TestPINSessionAndRestart(t *testing.T) {
 	s := testServer(t, "0012")
 	w := request(s, "GET", "/api/state", nil, nil)

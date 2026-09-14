@@ -3,7 +3,7 @@
 A small, self-hosted homepage for your favorite web apps, designed for Tesla browser screens and comfortable on a phone or desktop. One instance, one shared grid, no accounts.
 
 - Add, edit, remove, and reorder websites using touch, mouse, or keyboard.
-- Choose from local icons and six colors. No external favicon service or font requests.
+- Search 109 bundled icons, including webapp logos and general symbols, and choose from six colors. No external favicon service or font requests.
 - Optionally protect the page with a numeric PIN.
 - Keep your grid in a Docker volume, across browser sessions and app restarts.
 - Run a single Go binary with the React frontend embedded inside it.
@@ -47,6 +47,12 @@ Tap an app to open its URL in the same tab. Use browser Back to return. **Add an
 **Edit apps** exposes app editing and reorder controls. Drag the tile’s icon/name area to move an app (hold briefly on touchscreens), use its left/right buttons, or focus the tile and press Space, arrow keys, then Space to drop (Escape cancels). The separate **Edit** button changes its name, URL, icon, or color. Changes save immediately. All devices use the same grid. Returning to the page refreshes it; conflicting edits are rejected with a reload prompt instead of overwriting newer changes.
 
 The launcher opens normal websites. It does not bypass Tesla browser restrictions, third-party sign-in, subscriptions, DRM, or restrictions while driving. Individual services may not work in every vehicle browser. This project is independent and is not affiliated with Tesla or the linked services.
+
+### Icons
+
+The icon picker includes 61 webapp logos from [Simple Icons](https://simpleicons.org) and 48 general icons from [Lucide](https://lucide.dev). Search by name or topic, or filter to **Web apps** or **General**. Selected icons keep the tile's chosen color. All icons are bundled into the frontend; no CDN or icon service is required.
+
+The picker and Go validator share `internal/server/icon-catalog.json`. To add an icon, add its label and search keywords there and its static import and mapping in `web/src/icons.tsx`. TypeScript checks that every catalog entry has an icon.
 
 ### PIN sessions
 
@@ -125,4 +131,4 @@ The production container runs as a non-root user with a read-only root filesyste
 
 ## License
 
-MIT. See [LICENSE](LICENSE). App names and recognizable marks belong to their respective owners. Bundled fonts are distributed under their upstream SIL Open Font Licenses.
+MIT. See [LICENSE](LICENSE). App names and recognizable marks belong to their respective owners. Bundled fonts are distributed under their upstream SIL Open Font Licenses. Lucide uses the ISC license; Simple Icons uses CC0 with individual brand terms described in its [disclaimer](https://github.com/simple-icons/simple-icons/blob/develop/DISCLAIMER.md). Simple Icons' license and disclaimer are included in `web/public/assets`.

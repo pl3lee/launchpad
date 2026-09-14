@@ -35,7 +35,8 @@ import {
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { api, APIError, errorMessage, newID, type Grid, type State, type WebApp } from './api'
-import { AppIcon, Mark, colorNames, iconNames } from './icons'
+import { AppIcon, Mark, colorNames } from './icons'
+import { IconPicker } from './IconPicker'
 
 function Brand() {
   return (
@@ -307,23 +308,11 @@ function AppEditor({
               />
               <span className="field-hint">Opens in this tab. Use browser Back to return.</span>
             </div>
-            <fieldset disabled={busy}>
-              <legend>Icon</legend>
-              <div className="icon-picker">
-                {iconNames.map((icon) => (
-                  <button
-                    key={icon}
-                    type="button"
-                    aria-label={`${icon} icon`}
-                    aria-pressed={draft.icon === icon}
-                    className={`icon-choice ${draft.icon === icon ? 'selected' : ''}`}
-                    onClick={() => setDraft({ ...draft, icon })}
-                  >
-                    <AppIcon name={icon} size={22} />
-                  </button>
-                ))}
-              </div>
-            </fieldset>
+            <IconPicker
+              value={draft.icon}
+              onChange={(icon) => setDraft({ ...draft, icon })}
+              disabled={busy}
+            />
             <fieldset disabled={busy}>
               <legend>Color</legend>
               <div className="color-picker">
