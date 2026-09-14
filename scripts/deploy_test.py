@@ -16,6 +16,7 @@ command = name + ' ' + ' '.join(args)
 with open(os.environ['CALL_LOG'], 'a') as log:
     log.write(command + '\\n')
 if command == 'git branch --show-current': print('main')
+if command == 'git rev-parse HEAD': print(os.environ.get('LOCAL_SHA', os.environ['LATEST_SHA']))
 if command == 'git rev-parse refs/remotes/origin/main': print(os.environ['LATEST_SHA'])
 if command == 'docker compose images -q launchpad': print('old-image-id')
 if command == 'docker compose config --images': print('launchpad-image')
@@ -68,6 +69,12 @@ class DeploymentTest(unittest.TestCase):
         self.assertLess(calls.index('docker compose exec'), calls.index('docker compose build'))
         self.assertIn('git merge --ff-only ' + SHA, calls)
         self.assertEqual(marker, SHA)
+
+    def test_refuses_a_checkout_ahead_of_the_tested_commit(self):
+        result, calls, marker = self.run_deploy(LOCAL_SHA='c' * 40)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertNotIn('docker compose build', calls)
+        self.assertIsNone(marker)
 
     def test_failed_build_does_not_replace_running_container(self):
         result, calls, marker = self.run_deploy(FAIL_BUILD='1')

@@ -26,6 +26,7 @@ if [[ -n $previous ]]; then
   docker compose exec -T launchpad cat /data/apps.json > ".deploy-backups/apps-$(date -u +%Y%m%dT%H%M%SZ).json"
 fi
 git merge --ff-only "$revision"
+[[ $(git rev-parse HEAD) == "$revision" ]]
 docker compose build launchpad
 if ! docker compose up -d --no-build --wait --wait-timeout 90 launchpad; then
   echo 'Deployment failed its health check.' >&2
